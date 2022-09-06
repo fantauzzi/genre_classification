@@ -1,4 +1,4 @@
-name: split_data
+name: segregate
 conda_env: conda.yml
 
 entry_points:
