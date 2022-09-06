@@ -2,6 +2,8 @@
 mlruns
 outputs
 multirun
+artifacts
+wandb
 
 ### Python template
 # Byte-compiled / optimized / DLL files

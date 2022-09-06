@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/mlruns" />
+      <excludeFolder url="file://$MODULE_DIR$/outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/check_data/.pytest_cache" />
+      <excludeFolder url="file://$MODULE_DIR$/check_data/artifacts" />
+      <excludeFolder url="file://$MODULE_DIR$/check_data/wandb" />
+      <excludeFolder url="file://$MODULE_DIR$/download/wandb" />
+      <excludeFolder url="file://$MODULE_DIR$/preprocess/artifacts" />
+      <excludeFolder url="file://$MODULE_DIR$/preprocess/wandb" />
+    </content>
     <orderEntry type="jdk" jdkName="Python 3.8 (mlops)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

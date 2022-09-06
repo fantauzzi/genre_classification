@@ -7,7 +7,6 @@ from omegaconf import DictConfig, OmegaConf
 # This automatically reads in the configuration
 @hydra.main(config_name='config')
 def go(config: DictConfig):
-
     # Setup the wandb experiment. All runs will be grouped under this name
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
     os.environ["WANDB_RUN_GROUP"] = config["main"]["experiment_name"]
@@ -20,12 +19,12 @@ def go(config: DictConfig):
         # This was passed on the command line as a comma-separated list of steps
         steps_to_execute = config["main"]["execute_steps"].split(",")
     else:
-        assert isinstance(config["main"]["execute_steps"], list)
-        steps_to_execute = config["main"]["execute_steps"]
+        as_list = OmegaConf.to_object(config["main"]["execute_steps"])
+        assert isinstance(as_list, list)
+        steps_to_execute = as_list
 
     # Download step
     if "download" in steps_to_execute:
-
         _ = mlflow.run(
             os.path.join(root_path, "download"),
             "main",
@@ -38,22 +37,33 @@ def go(config: DictConfig):
         )
 
     if "preprocess" in steps_to_execute:
-
-        ## YOUR CODE HERE: call the preprocess step
-        pass
+        _ = mlflow.run(
+            os.path.join(root_path, "preprocess"),
+            "main",
+            parameters={
+                "input_artifact": "raw_data.parquet:latest",
+                "artifact_name": "preprocessed_data.csv",
+                "artifact_type": "processed_data",
+                "artifact_description": "Data after pre-processing"
+            },
+        )
 
     if "check_data" in steps_to_execute:
-
-        ## YOUR CODE HERE: call the check_data step
-        pass
+        _ = mlflow.run(
+            os.path.join(root_path, "check_data"),
+            "main",
+            parameters={
+                "reference_artifact": config['data']['reference_dataset'],
+                "sample_artifact": "preprocessed_data.csv:latest",
+                "ks_alpha": config['data']['ks_alpha']
+            },
+        )
 
     if "segregate" in steps_to_execute:
-
         ## YOUR CODE HERE: call the segregate step
         pass
 
     if "random_forest" in steps_to_execute:
-
         # Serialize decision tree configuration
         model_config = os.path.abspath("random_forest_config.yml")
 
@@ -64,7 +74,6 @@ def go(config: DictConfig):
         pass
 
     if "evaluate" in steps_to_execute:
-
         ## YOUR CODE HERE: call the evaluate step
         pass
 
