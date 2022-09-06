@@ -94,8 +94,14 @@ def go(config: DictConfig):
         )
 
     if "evaluate" in steps_to_execute:
-        ## YOUR CODE HERE: call the evaluate step
-        pass
+        _ = mlflow.run(
+            os.path.join(root_path, "evaluate"),
+            "main",
+            parameters={
+                "model_export": config['random_forest_pipeline']['export_artifact'] + ':latest',
+                "test_data": 'preprocessed_data_test.csv:latest'
+            },
+        )
 
 
 if __name__ == "__main__":
